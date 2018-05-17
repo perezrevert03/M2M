@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<MyER:Esquema xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:MyER="MyER" Nombre="Nombre Diagrama">
+  <Tablas Nombre="clase1">
+    <columnas Nombre="idclase1" EsPrimaria="true"/>
+  </Tablas>
+  <Tablas Nombre="clase2">
+    <columnas Nombre="idclase2" EsPrimaria="true"/>
+  </Tablas>
+  <Tablas Nombre="clase3">
+    <columnas Nombre="idclase3" EsPrimaria="true"/>
+  </Tablas>
+  <Tablas Nombre="clase3hija">
+    <columnas Nombre="idclase3hija" EsPrimaria="true"/>
+  </Tablas>
+  <Tablas Nombre="clase4">
+    <columnas Nombre="idclase4" EsPrimaria="true"/>
+  </Tablas>
+  <Tablas Nombre="clase5">
+    <columnas Nombre="idclase5" EsPrimaria="true"/>
+  </Tablas>
+  <Tablas Nombre="clase6">
+    <columnas Nombre="idclase6" EsPrimaria="true"/>
+  </Tablas>
+  <Tablas Nombre="clase7">
+    <columnas Nombre="idclase7" EsPrimaria="true"/>
+  </Tablas>
+  <Tablas Nombre="clase8">
+    <columnas Nombre="idclase8" EsPrimaria="true"/>
+  </Tablas>
+  <Tablas Nombre="asociacion_clase2_clase8">
+    <columnas Nombre="idasociacion_clase2_clase8" EsPrimaria="true"/>
+  </Tablas>
+</MyER:Esquema>

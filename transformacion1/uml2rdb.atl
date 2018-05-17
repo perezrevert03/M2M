@@ -1,0 +1,15 @@
+-- @nsURI uml=dsmUML
+-- @nsURI er=MyER
+
+module uml2rdb;
+create OUT : er from IN : uml;
+
+-- 1. Diagrama de clases -> Esquema relacional
+rule diagrama2esquema {
+	from
+		d : uml!Diagrama
+	to 
+		e : er!Esquema (
+			Nombre <- d.nombre -- Le da el nombre del diagrama al esquema
+		)
+}

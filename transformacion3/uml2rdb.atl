@@ -1,0 +1,33 @@
+-- @nsURI uml=dsmUML
+-- @nsURI er=MyER
+
+module uml2rdb;
+create OUT : er from IN : uml;
+
+-- 1. Diagrama de clases -> Esquema relacional
+rule diagrama2esquema {
+	from
+		d : uml!Diagrama
+	to 
+		e : er!Esquema (
+			Nombre <- d.nombre,
+			Tablas <- d.clases
+		)
+}
+
+-- 2. Clases -> Tablas
+rule clase2table {
+	from
+		c : uml!Clase
+	to 
+		t : er!Tabla (
+			Nombre <- c.nombre,
+			columnas <- col -- 3. Generación de columna id en cada tabla
+			-- Columnas id creadas por referencia
+		),
+		col : er!Columna ( -- 3. Generación de columna id en cada tabla
+			Nombre <- 'id' + c.nombre,
+			EsPrimaria <- true,
+			Tipo <- #integer	
+		)
+}

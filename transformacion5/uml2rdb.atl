@@ -1,0 +1,49 @@
+-- @nsURI uml=dsmUML
+-- @nsURI er=MyER
+
+module uml2rdb;
+create OUT : er from IN : uml;
+
+rule diagrama2esquema { -- 1. Diagrama a esquema
+	from
+		d : uml!Diagrama
+	to 
+		e : er!Esquema (
+			Nombre <- d.nombre,
+			Tablas <- d.clases -- 2. De clase a tabla
+		)
+}
+
+rule clase2table { -- 2. De clase a tabla
+	from
+		c : uml!Clase
+	to 
+		t : er!Tabla (
+			Nombre <- c.nombre,
+			columnas <- col, -- 3. Columna id en cada tabla
+			columnas <- c.atributos -- 4. Generación de columnas en cada tabla
+		),
+		col : er!Columna ( -- 3. Columna id en cada tabla
+			Nombre <- 'id' + c.nombre,
+			EsPrimaria <- true,
+			Tipo <- #integer	
+		)
+}
+
+rule atributo2columna { -- 4. Generación de columnas en cada tabla
+	from 
+		a : uml!Atributo
+	to	
+		col : er!Columna (
+			Nombre <- a.nombre,
+			EsPrimaria <- false,
+			-- 5. Generación de datos de columnas
+			Tipo <- if (a.tipo.toString() = 'entero') 
+				    then #integer 
+				    else if (a.tipo.toString() = 'real') 
+					     then #double 
+				         else #string 
+					     endif
+				    endif
+		)
+}

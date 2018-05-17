@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<MyER:Esquema xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:MyER="MyER" Nombre="Nombre Diagrama">
+  <Tablas Nombre="clase1"/>
+  <Tablas Nombre="clase2"/>
+  <Tablas Nombre="clase3"/>
+  <Tablas Nombre="clase3hija"/>
+  <Tablas Nombre="clase4"/>
+  <Tablas Nombre="clase5"/>
+  <Tablas Nombre="clase6"/>
+  <Tablas Nombre="clase7"/>
+  <Tablas Nombre="clase8"/>
+  <Tablas Nombre="asociacion_clase2_clase8"/>
+</MyER:Esquema>

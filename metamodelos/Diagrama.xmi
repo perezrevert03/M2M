@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dsmUML:Diagrama
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dsmUML="dsmUML"
+    xsi:schemaLocation="dsmUML /Practica 2/metamodelos/dsmUML.ecore"
+    nombre="Nombre Diagrama">
+  <clases nombre="clase1"
+      asociacion1="//@asociaciones.0 //@asociaciones.1">
+    <atributos
+        nombre="atributo1"/>
+    <atributos
+        nombre="atributo2"
+        tipo="real"/>
+  </clases>
+  <clases nombre="clase2"
+      asociacion1="//@asociaciones.4"
+      asociacion2="//@asociaciones.0">
+    <atributos
+        nombre="atributo3"
+        tipo="cadena"/>
+  </clases>
+  <clases nombre="clase3"
+      asociacion1="//@asociaciones.2"
+      asociacion2="//@asociaciones.1"
+      sub="//@clases.3">
+    <atributos
+        nombre="atributo4"/>
+  </clases>
+  <clases nombre="clase3hija"
+      csuper="//@clases.2"/>
+  <clases nombre="clase4"
+      asociacion1="//@asociaciones.3"
+      asociacion2="//@asociaciones.2"/>
+  <clases nombre="clase5"
+      asociacion1="//@asociaciones.5 //@asociaciones.6"
+      asociacion2="//@asociaciones.3"/>
+  <clases nombre="clase6"
+      asociacion2="//@asociaciones.5"/>
+  <clases nombre="clase7"
+      asociacion2="//@asociaciones.6"/>
+  <clases nombre="clase8"
+      asociacion2="//@asociaciones.4"/>
+  <clases xsi:type="dsmUML:ClaseAsociacion"
+      nombre="asociacion_clase2_clase8"
+      sobre="//@asociaciones.4"/>
+  <asociaciones
+      nombre="clase1_clase2"
+      clase1="//@clases.0"
+      clase2="//@clases.1"
+      rol1="clase1"
+      rol2="clase2"
+      min1="1"
+      min2="1"/>
+  <asociaciones
+      nombre="clase1_clase3"
+      clase1="//@clases.0"
+      clase2="//@clases.2"
+      rol1="clase1"
+      rol2="clase3"
+      min1="1"
+      max2="99"/>
+  <asociaciones
+      nombre="clase3_clase4"
+      clase1="//@clases.2"
+      clase2="//@clases.4"
+      rol1="clase3"
+      rol2="clase4"
+      max1="99"
+      min2="1"/>
+  <asociaciones
+      nombre="clase4_clase5"
+      clase1="//@clases.4"
+      clase2="//@clases.5"
+      rol1="clase4"
+      rol2="clase5"
+      max1="99"
+      max2="99"/>
+  <asociaciones
+      nombre="clase2_clase8_con_clase_asociacion"
+      clase1="//@clases.1"
+      clase2="//@clases.8"
+      rol1="clase2"
+      rol2="clase8"
+      min1="1"
+      max2="99"
+      claseasociacion="//@clases.9"/>
+  <asociaciones
+      xsi:type="dsmUML:Agregacion"
+      nombre="clase5_clase6"
+      clase1="//@clases.5"
+      clase2="//@clases.6"
+      rol1="clase5"
+      rol2="clase6"
+      min1="1"
+      min2="99"
+      max2="99"
+      enclase1="true"/>
+  <asociaciones
+      xsi:type="dsmUML:Agregacion"
+      nombre="clase5_clase7"
+      clase1="//@clases.5"
+      clase2="//@clases.7"
+      rol1="clase5"
+      rol2="clase7"
+      min1="1"
+      min2="1"
+      enclase1="true"/>
+</dsmUML:Diagrama>

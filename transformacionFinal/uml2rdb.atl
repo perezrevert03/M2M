@@ -1,0 +1,158 @@
+-- @nsURI uml=dsmUML
+-- @nsURI er=MyER
+-- Este .atl es el único que no contiene comentarios explicativos
+
+module uml2rdb;
+create OUT : er from IN : uml;
+
+rule diagrama2esquema {
+	from
+		d : uml!Diagrama
+	to 
+		e : er!Esquema (
+			Nombre <- d.nombre,
+			Tablas <- d.clases,
+			clavesAjenas <- d.asociaciones	
+		)
+}
+
+rule clase2table {
+	from
+		c : uml!Clase (c.csuper.oclIsUndefined())
+	to 
+		t : er!Tabla (
+			Nombre <- c.nombre,
+			columnas <- col,
+			columnas <- c.atributos
+		),
+		col : er!Columna (
+			Nombre <- 'id_' + c.nombre,
+			EsPrimaria <- true,
+			Tipo <- #integer
+		)
+}
+
+rule clasehija2table {
+	from
+		c : uml!Clase (not c.csuper.oclIsUndefined())
+	to 
+		t : er!Tabla (
+			Nombre <- c.nombre,
+			columnas <- col,
+			columnas <- c.atributos
+		),
+		col : er!Columna (
+			Nombre <- 'id_' + c.nombre,
+			EsPrimaria <- true,
+			Tipo <- #integer,
+			enClaveAjena <- fk
+		),
+		fk : er!ClaveAjena (
+			Nombre <- 'ca_de_' + c.nombre + '_a_' + c.csuper.nombre,
+			columna <- fk_col,
+			columnaReferenciada <- thisModule.resolveTemp(c.csuper, 'col'),
+			esquema <- t.Padre
+		),
+		fk_col : er!Columna (
+			Nombre <- 'id_fk_' + c.csuper.nombre,
+			tabla <- t
+		)
+}
+
+rule atributo2columna {
+	from 
+		a : uml!Atributo
+	to	
+		col : er!Columna (
+			Nombre <- a.nombre,
+			EsPrimaria <- false,
+			Tipo <- if (a.tipo.toString() = 'entero')
+				    then #integer 
+				    else if (a.tipo.toString() = 'real') 
+					     then #double 
+				         else #string 
+					     endif
+				    endif
+		)
+}
+
+rule asociacion2claveajena { 
+	from 
+		a : uml!Asociacion (a.max1 = 1 and a.claseasociacion.oclIsUndefined())
+	to 
+		fk : er!ClaveAjena (
+			Nombre <- 'ca_de_' + a.rol2 + '_a_' + a.rol1,
+			columna <- fk_columna,
+			columnaReferenciada <- thisModule.resolveTemp(a.clase1, 'col')
+		),
+		fk_columna : er!Columna (
+			Nombre <- 'id_fk_' + a.rol1,
+			tabla <- a.clase2
+		)
+}
+
+rule asociacion2claveajena2 {
+	from
+		a : uml!Asociacion (a.max2 = 1 and a.max1 > 1 and a.claseasociacion.oclIsUndefined())
+	to 
+		fk : er!ClaveAjena (
+			Nombre <- 'ca_de_' + a.rol1 + '_a_' + a.rol2,
+			columna <- fk_columna,
+			columnaReferenciada <- thisModule.resolveTemp(a.clase2, 'col')
+		),
+		fk_columna : er!Columna (
+			Nombre <- 'id_fk_' + a.rol2,
+			tabla <- a.clase1
+		)
+}
+
+rule asociacion2claveajena3 {
+	from
+		a : uml!Asociacion (a.max1 > 1 and a.max2 > 1 and a.claseasociacion.oclIsUndefined())
+	to 
+		fk_1 : er!ClaveAjena (
+			Nombre <- 'ca_de_' + a.rol1 + '_a_' + a.rol2,
+			columna <- fk_columna_1,
+			columnaReferenciada <- thisModule.resolveTemp(a.clase2, 'col')
+		),
+		fk_2 : er!ClaveAjena (
+			Nombre <- 'ca_de_' + a.rol2 + '_a_' + a.rol1,
+			columna <- fk_columna_2,
+			columnaReferenciada <- thisModule.resolveTemp(a.clase1, 'col'),
+			esquema <- fk_1.esquema
+		),
+		fk_columna_1 : er!Columna (
+			Nombre <- 'id_fk_' + a.rol2,
+			tabla <- t
+		),
+		fk_columna_2 : er!Columna (
+			Nombre <- 'id_fk_' + a.rol1,
+			tabla <- t
+		),
+		t : er!Tabla (
+			Nombre <- a.rol1 + '_' + a.rol2,
+			Padre <- fk_1.esquema
+		)
+}
+
+rule asociacion2claveajena4 {
+	from
+		a : uml!Asociacion (not a.claseasociacion.oclIsUndefined())
+	to 
+		fk_1 : er!ClaveAjena (
+			Nombre <- 'ca_de_' + a.claseasociacion.nombre + '_a_' + a.rol1,
+			columnaReferenciada <- thisModule.resolveTemp(a.clase1, 'col'),
+			columna <- fk_columna_1
+		), fk_2 : er!ClaveAjena (
+			Nombre <- 'ca_de_' + a.claseasociacion.nombre + '_a_' + a.rol2,
+			columnaReferenciada <- thisModule.resolveTemp(a.clase2, 'col'),
+			columna <- fk_columna_2,
+			esquema <- fk_1.esquema
+		),fk_columna_1 : er!Columna (
+			Nombre <- 'id_fk_' + a.rol1,
+			tabla <- a.claseasociacion
+		), fk_columna_2 : er!Columna (
+			Nombre <- 'id_fk_' + a.rol2,
+			tabla <- a.claseasociacion
+		)
+}
